@@ -640,6 +640,68 @@ body {
     background-color: #e5e5e5;
 }
 
+.comment-section {
+    margin-top: 24px;
+}
+
+.comment-section h3 {
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
+.add-comment {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.add-comment input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.add-comment input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.add-comment button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.comment-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.comment-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.comment-content h4 {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.comment-content p {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
 .modal-description {
     background-color: #272727;
     padding: 16px;
@@ -648,6 +710,85 @@ body {
     line-height: 1.5;
     white-space: pre-wrap;
 }
+
+/* Creator Studio Styles */
+.creator-dashboard h1 {
+    margin-bottom: 32px;
+    font-size: 28px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+}
+
+.stat-card {
+    background-color: #1e1e1e;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-card h3 {
+    color: var(--text-muted);
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.stat-card p {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.video-list-studio {
+    background-color: #1e1e1e;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.studio-video-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.studio-video-item:last-child {
+    border-bottom: none;
+}
+
+.studio-video-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.studio-video-info img {
+    width: 120px;
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+}
+
+.studio-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.studio-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.edit-btn { background-color: #3e3e3e; color: white; }
+.delete-btn { background-color: #cc0000; color: white; }
 
 /* Responsive */
 @media (max-width: 1024px) {

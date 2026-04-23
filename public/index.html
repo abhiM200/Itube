@@ -122,13 +122,18 @@
                     <span class="material-icons-round">slideshow</span>
                     <span>Your videos</span>
                 </a>
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" id="watch-later-link">
                     <span class="material-icons-round">watch_later</span>
                     <span>Watch later</span>
                 </a>
                 <a href="#" class="nav-link">
                     <span class="material-icons-round">thumb_up</span>
                     <span>Liked videos</span>
+                </a>
+                <hr>
+                <a href="#" class="nav-link" id="creator-studio-link">
+                    <span class="material-icons-round">settings_applications</span>
+                    <span>Creator Studio</span>
                 </a>
                 <hr>
                 <h4 class="sidebar-title">Subscriptions</h4>
@@ -149,7 +154,68 @@
         </main>
     </div>
 
-    <!-- Video Player Modal (Simulating video playback) -->
+    <!-- Creator Studio Modal -->
+    <div class="video-modal-overlay" id="creator-modal">
+        <div class="video-modal-content" style="max-width: 1200px; padding: 40px;">
+            <button class="close-modal-btn" id="close-creator-btn">
+                <span class="material-icons-round">close</span>
+            </button>
+            <div class="creator-dashboard">
+                <h1>Creator Studio</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Views</h3>
+                        <p id="total-views">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Subscribers</h3>
+                        <p id="total-subs">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Likes</h3>
+                        <p id="total-likes">0</p>
+                    </div>
+                </div>
+                <div class="video-list-studio">
+                    <h3>Your Videos</h3>
+                    <div id="studio-video-list">
+                        <!-- List of user videos with edit/delete options -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="video-modal-overlay" id="upload-modal">
+        <div class="auth-modal-content">
+            <button class="close-modal-btn" id="close-upload-btn">
+                <span class="material-icons-round">close</span>
+            </button>
+            <div class="auth-box">
+                <h2>Upload Video</h2>
+                <form id="upload-form">
+                    <div class="input-group">
+                        <input type="text" id="upload-title" placeholder="Video Title" required>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="upload-desc" placeholder="Description" style="width: 100%; height: 80px; padding: 10px; background: transparent; color: white; border: 1px solid var(--border-color);"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label style="display: block; text-align: left; margin-bottom: 5px;">Video File</label>
+                        <input type="file" id="upload-video-file" accept="video/*" required>
+                    </div>
+                    <div class="input-group">
+                        <label style="display: block; text-align: left; margin-bottom: 5px;">Thumbnail</label>
+                        <input type="file" id="upload-thumb-file" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn">Publish</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
     <div class="video-modal-overlay" id="video-modal">
         <div class="video-modal-content">
             <button class="close-modal-btn" id="close-modal-btn">
@@ -157,18 +223,17 @@
             </button>
             <div class="player-container">
                 <video id="actual-video-player" controls autoplay>
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
                     Your browser does not support HTML video.
                 </video>
             </div>
-            <div class="video-details-modal" id="video-details-modal">
+            <div class="video-details-modal">
                 <h2 id="modal-title">Video Title</h2>
                 <div class="modal-stats">
                     <span id="modal-views">1M views</span> • <span id="modal-date">1 day ago</span>
                 </div>
                 <div class="modal-actions">
-                    <button><span class="material-icons-round">thumb_up</span> Like</button>
-                    <button><span class="material-icons-round">thumb_down</span> Dislike</button>
+                    <button id="like-btn"><span class="material-icons-round">thumb_up</span> <span id="like-count">0</span></button>
+                    <button><span class="material-icons-round">thumb_down</span></button>
                     <button><span class="material-icons-round">share</span> Share</button>
                     <button><span class="material-icons-round">playlist_add</span> Save</button>
                 </div>
@@ -183,6 +248,17 @@
                 </div>
                 <div class="modal-description" id="modal-description">
                     Video description goes here.
+                </div>
+                <hr>
+                <div class="comment-section">
+                    <h3>Comments</h3>
+                    <div class="add-comment">
+                        <input type="text" id="comment-input" placeholder="Add a comment...">
+                        <button id="submit-comment">Comment</button>
+                    </div>
+                    <div id="comments-container">
+                        <!-- Comments will be loaded here -->
+                    </div>
                 </div>
             </div>
         </div>
