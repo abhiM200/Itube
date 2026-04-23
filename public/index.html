@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITube - Broadcast Yourself</title>
+    <meta name="description" content="ITube is a modern video sharing platform inspired by YouTube. Discover, watch, and share your favorite videos.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff0000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="icon-btn menu-btn" id="menu-btn">
+                <span class="material-icons-round">menu</span>
+            </button>
+            <div class="logo">
+                <span class="material-icons-round logo-icon">play_circle_filled</span>
+                <h1>ITube</h1>
+            </div>
+        </div>
+
+        <div class="nav-middle">
+            <div class="search-container">
+                <input type="text" placeholder="Search" id="search-input">
+                <button class="search-btn" id="search-btn">
+                    <span class="material-icons-round">search</span>
+                </button>
+            </div>
+            <button class="icon-btn mic-btn">
+                <span class="material-icons-round">mic</span>
+            </button>
+        </div>
+
+        <div class="nav-right">
+            <button class="icon-btn create-btn">
+                <span class="material-icons-round">video_call</span>
+            </button>
+            <button class="icon-btn notif-btn">
+                <span class="material-icons-round">notifications</span>
+            </button>
+            <div class="profile-pic">
+                <img src="https://i.pravatar.cc/150?img=11" alt="User Profile">
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="nav-links">
+                <a href="#" class="nav-link active">
+                    <span class="material-icons-round">home</span>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="material-icons-round">explore</span>
+                    <span>Explore</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="material-icons-round">subscriptions</span>
+                    <span>Subscriptions</span>
+                </a>
+                <hr>
+                <a href="#" class="nav-link">
+                    <span class="material-icons-round">video_library</span>
+                    <span>Library</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="material-icons-round">history</span>
+                    <span>History</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="material-icons-round">slideshow</span>
+                    <span>Your videos</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="material-icons-round">watch_later</span>
+                    <span>Watch later</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="material-icons-round">thumb_up</span>
+                    <span>Liked videos</span>
+                </a>
+                <hr>
+                <h4 class="sidebar-title">Subscriptions</h4>
+                <div id="subscriptions-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </aside>
+
+        <main class="content" id="main-content">
+            <div class="filters" id="filters">
+                <!-- Populated by JS -->
+            </div>
+
+            <div class="video-grid" id="video-grid">
+                <!-- Video Cards Populated by JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Video Player Modal (Simulating video playback) -->
+    <div class="video-modal-overlay" id="video-modal">
+        <div class="video-modal-content">
+            <button class="close-modal-btn" id="close-modal-btn">
+                <span class="material-icons-round">close</span>
+            </button>
+            <div class="player-container">
+                <video id="actual-video-player" controls autoplay>
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    Your browser does not support HTML video.
+                </video>
+            </div>
+            <div class="video-details-modal" id="video-details-modal">
+                <h2 id="modal-title">Video Title</h2>
+                <div class="modal-stats">
+                    <span id="modal-views">1M views</span> • <span id="modal-date">1 day ago</span>
+                </div>
+                <div class="modal-actions">
+                    <button><span class="material-icons-round">thumb_up</span> Like</button>
+                    <button><span class="material-icons-round">thumb_down</span> Dislike</button>
+                    <button><span class="material-icons-round">share</span> Share</button>
+                    <button><span class="material-icons-round">playlist_add</span> Save</button>
+                </div>
+                <hr>
+                <div class="modal-channel-info">
+                    <img id="modal-channel-avatar" src="" alt="Channel Avatar">
+                    <div>
+                        <h4 id="modal-channel-name">Channel Name</h4>
+                        <span id="modal-subs">1M subscribers</span>
+                    </div>
+                    <button class="subscribe-btn">Subscribe</button>
+                </div>
+                <div class="modal-description" id="modal-description">
+                    Video description goes here.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
