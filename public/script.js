@@ -11,6 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
     const searchBtn = document.getElementById('search-btn');
 
+    // Auth Elements
+    const authModal = document.getElementById('auth-modal');
+    const openAuthBtn = document.getElementById('open-auth-btn');
+    const closeAuthBtn = document.getElementById('close-auth-btn');
+    const toggleAuthMode = document.getElementById('toggle-auth-mode');
+    const authTitle = document.getElementById('auth-title');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    const usernameGroup = document.getElementById('username-group');
+    const authUsernameInput = document.getElementById('auth-username');
+    const authEmailInput = document.getElementById('auth-email');
+    const authPasswordInput = document.getElementById('auth-password');
+    const authForm = document.getElementById('auth-form');
+    const authSubmitBtn = document.getElementById('auth-submit-btn');
+    const authToggleText = document.getElementById('auth-toggle-text');
+    
+    const authNavSection = document.getElementById('auth-nav-section');
+    const userProfileSection = document.getElementById('user-profile-section');
+
+    let isSignUpMode = false;
+
     // Modal Elements
     const videoModal = document.getElementById('video-modal');
     const closeModalBtn = document.getElementById('close-modal-btn');
@@ -111,6 +131,90 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.toggle('collapsed');
         }
     });
+
+    // Auth Modal Logic
+    openAuthBtn.addEventListener('click', () => {
+        authModal.classList.add('active');
+    });
+
+    closeAuthBtn.addEventListener('click', () => {
+        authModal.classList.remove('active');
+    });
+
+    toggleAuthMode.addEventListener('click', (e) => {
+        e.preventDefault();
+        isSignUpMode = !isSignUpMode;
+        
+        if (isSignUpMode) {
+            authTitle.textContent = 'Create account';
+            authSubtitle.textContent = 'to continue to ITube';
+            usernameGroup.style.display = 'block';
+            authUsernameInput.disabled = false;
+            authSubmitBtn.textContent = 'Create';
+            authToggleText.innerHTML = 'Already have an account? <a href="#" id="toggle-auth-mode">Sign in</a>';
+        } else {
+            authTitle.textContent = 'Sign in';
+            authSubtitle.textContent = 'to continue to ITube';
+            usernameGroup.style.display = 'none';
+            authUsernameInput.disabled = true;
+            authSubmitBtn.textContent = 'Next';
+            authToggleText.innerHTML = 'No account? <a href="#" id="toggle-auth-mode">Create account</a>';
+        }
+        
+        // Re-attach listener since we replaced innerHTML
+        document.getElementById('toggle-auth-mode').addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleAuthMode.click();
+        });
+    });
+
+    authForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const endpoint = isSignUpMode ? '/api/auth/signup' : '/api/auth/signin';
+        const payload = {
+            email: authEmailInput.value,
+            password: authPasswordInput.value
+        };
+        if (isSignUpMode) payload.username = authUsernameInput.value;
+
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                if (isSignUpMode) {
+                    alert('Account created! Please sign in.');
+                    toggleAuthMode.click();
+                } else {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('username', data.username);
+                    updateUIForLoggedInUser(data.username);
+                    authModal.classList.remove('active');
+                }
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error('Auth error:', error);
+        }
+    });
+
+    function updateUIForLoggedInUser(username) {
+        authNavSection.style.display = 'none';
+        userProfileSection.style.display = 'block';
+        // Add logout option or just keep it simple
+    }
+
+    // Check if already logged in
+    const savedToken = localStorage.getItem('token');
+    const savedUsername = localStorage.getItem('username');
+    if (savedToken && savedUsername) {
+        updateUIForLoggedInUser(savedUsername);
+    }
 
     // Search Logic
     const performSearch = () => {

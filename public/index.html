@@ -44,11 +44,55 @@
             <button class="icon-btn notif-btn">
                 <span class="material-icons-round">notifications</span>
             </button>
-            <div class="profile-pic">
+            <div id="auth-nav-section">
+                <button class="signin-nav-btn" id="open-auth-btn">
+                    <span class="material-icons-round">account_circle</span>
+                    Sign in
+                </button>
+            </div>
+            <div class="profile-pic" id="user-profile-section" style="display: none;">
                 <img src="https://i.pravatar.cc/150?img=11" alt="User Profile">
             </div>
         </div>
     </nav>
+
+    <!-- ... main container content ... -->
+
+    <!-- Auth Modal -->
+    <div class="video-modal-overlay" id="auth-modal">
+        <div class="auth-modal-content">
+            <button class="close-modal-btn" id="close-auth-btn">
+                <span class="material-icons-round">close</span>
+            </button>
+            <div class="auth-box">
+                <div class="logo" style="justify-content: center; margin-bottom: 24px;">
+                    <span class="material-icons-round logo-icon">play_circle_filled</span>
+                    <h1>ITube</h1>
+                </div>
+                <h2 id="auth-title">Sign in</h2>
+                <p id="auth-subtitle">to continue to ITube</p>
+                
+                <form id="auth-form">
+                    <div class="input-group" id="username-group" style="display: none;">
+                        <input type="text" id="auth-username" placeholder="Username" required disabled>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="auth-email" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="auth-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="auth-submit-btn" id="auth-submit-btn">Next</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p id="auth-toggle-text">No account? <a href="#" id="toggle-auth-mode">Create account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal ... -->
 
     <div class="main-container">
         <aside class="sidebar" id="sidebar">
