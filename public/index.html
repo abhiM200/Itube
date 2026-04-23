@@ -135,6 +135,10 @@
                     <span class="material-icons-round">settings_applications</span>
                     <span>Creator Studio</span>
                 </a>
+                <a href="#" class="nav-link" id="admin-panel-link" style="display: none;">
+                    <span class="material-icons-round">admin_panel_settings</span>
+                    <span>Admin Panel</span>
+                </a>
                 <hr>
                 <h4 class="sidebar-title">Subscriptions</h4>
                 <div id="subscriptions-list">
@@ -152,6 +156,38 @@
                 <!-- Video Cards Populated by JS -->
             </div>
         </main>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div class="video-modal-overlay" id="admin-modal">
+        <div class="video-modal-content" style="max-width: 1200px; padding: 40px;">
+            <button class="close-modal-btn" id="close-admin-btn">
+                <span class="material-icons-round">close</span>
+            </button>
+            <div class="creator-dashboard">
+                <h1>Admin Dashboard</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <p id="admin-total-users">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Videos</h3>
+                        <p id="admin-total-videos">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Global Views</h3>
+                        <p id="admin-total-views">0</p>
+                    </div>
+                </div>
+                <div class="video-list-studio">
+                    <h3>User Management</h3>
+                    <div id="admin-user-list">
+                        <!-- List of all users -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Creator Studio Modal -->

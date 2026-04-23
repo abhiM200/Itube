@@ -35,9 +35,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Mock User Database
-const users = [];
+const users = [
+    { 
+        id: 'admin-id', 
+        username: 'admin', 
+        email: 'admin@itube.com', 
+        password: '', // Hashed below
+        role: 'admin',
+        profilePic: 'https://i.pravatar.cc/150?img=1'
+    }
+];
 
-// Mock Video Database (with likes and comments)
+// Hash admin password on startup
+(async () => {
+    users[0].password = await bcrypt.hash('admin123', 10);
+})();
+
+// Mock Video Database
 const videos = [
     {
         id: '1',
@@ -50,19 +64,17 @@ const videos = [
         date: '2 days ago',
         description: 'Learn the latest features of JS!',
         likes: 12000,
-        comments: [
-            { id: 'c1', user: 'DevGuy', text: 'Amazing tutorial!', replies: [] }
-        ],
+        comments: [{ id: 'c1', user: 'DevGuy', text: 'Amazing tutorial!', replies: [] }],
         tags: ['coding', 'javascript']
     }
 ];
 
-// Auth API Endpoints (Sign-up, Sign-in)
+// Auth API Endpoints
 app.post('/api/auth/signup', async (req, res) => {
     const { username, email, password } = req.body;
     if (users.find(u => u.email === email)) return res.status(400).json({ message: 'User already exists' });
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = { id: uuidv4(), username, email, password: hashedPassword, profilePic: 'https://i.pravatar.cc/150?img=11' };
+    const newUser = { id: uuidv4(), username, email, password: hashedPassword, profilePic: 'https://i.pravatar.cc/150?img=11', role: 'user' };
     users.push(newUser);
     res.status(201).json({ message: 'User created' });
 });
@@ -71,8 +83,21 @@ app.post('/api/auth/signin', async (req, res) => {
     const { email, password } = req.body;
     const user = users.find(u => u.email === email);
     if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).json({ message: 'Invalid credentials' });
-    const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token, username: user.username, profilePic: user.profilePic });
+    const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token, username: user.username, profilePic: user.profilePic, role: user.role });
+});
+
+// Admin API Endpoints
+app.get('/api/admin/stats', (req, res) => {
+    res.json({
+        totalUsers: users.length,
+        totalVideos: videos.length,
+        totalViews: videos.reduce((acc, v) => acc + parseInt(v.views.toString().replace('K', '000') || 0), 0)
+    });
+});
+
+app.get('/api/admin/users', (req, res) => {
+    res.json(users.map(u => ({ id: u.id, username: u.username, email: u.email, role: u.role })));
 });
 
 // Video API Endpoints
@@ -96,7 +121,7 @@ app.post('/api/videos/upload', upload.fields([{ name: 'video', maxCount: 1 }, { 
         tags: tags ? tags.split(',') : [],
         videoUrl: `/uploads/videos/${videoFile.filename}`,
         thumbnail: `/uploads/thumbnails/${thumbnailFile.filename}`,
-        duration: '0:00', // In real app, extract from metadata
+        duration: '0:00',
         channel: { name: 'Your Channel', img: 'https://i.pravatar.cc/150?img=11', subs: '0' },
         views: '0',
         date: 'Just now',
@@ -128,12 +153,11 @@ app.post('/api/videos/:id/comment', (req, res) => {
 });
 
 app.get('/api/creator/stats', (req, res) => {
-    // In a real app, filter by req.user.id
-    const userVideos = videos; // Mocking all for now
+    const userVideos = videos; 
     const stats = {
-        totalViews: userVideos.reduce((acc, v) => acc + parseInt(v.views.replace('K', '000') || 0), 0),
+        totalViews: userVideos.reduce((acc, v) => acc + parseInt(v.views.toString().replace('K', '000') || 0), 0),
         totalLikes: userVideos.reduce((acc, v) => acc + (v.likes || 0), 0),
-        subscribers: '1.2M', // Mocked
+        subscribers: '1.2M',
         videos: userVideos
     };
     res.json(stats);
@@ -154,7 +178,6 @@ app.get('/api/subscriptions', (req, res) => res.json([
     { name: "CodeNinja", img: "https://i.pravatar.cc/150?img=12" }
 ]));
 
-// Serve frontend for all other routes
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

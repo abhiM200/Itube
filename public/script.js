@@ -192,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('username', data.username);
+                    localStorage.setItem('role', data.role);
                     updateUIForLoggedInUser(data.username);
                     authModal.classList.remove('active');
                 }
@@ -206,8 +207,61 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateUIForLoggedInUser(username) {
         authNavSection.style.display = 'none';
         userProfileSection.style.display = 'block';
-        // Add logout option or just keep it simple
+        
+        const role = localStorage.getItem('role');
+        if (role === 'admin') {
+            document.getElementById('admin-panel-link').style.display = 'flex';
+        }
     }
+
+    // --- Admin Panel Logic ---
+    const adminModal = document.getElementById('admin-modal');
+    const openAdminBtn = document.getElementById('admin-panel-link');
+    const closeAdminBtn = document.getElementById('close-admin-btn');
+    const adminUserList = document.getElementById('admin-user-list');
+    
+    const adminTotalUsers = document.getElementById('admin-total-users');
+    const adminTotalVideos = document.getElementById('admin-total-videos');
+    const adminTotalViews = document.getElementById('admin-total-views');
+
+    async function loadAdminDashboard() {
+        try {
+            const statsRes = await fetch('/api/admin/stats');
+            const stats = await statsRes.json();
+            adminTotalUsers.textContent = stats.totalUsers;
+            adminTotalVideos.textContent = stats.totalVideos;
+            adminTotalViews.textContent = stats.totalViews.toLocaleString();
+
+            const usersRes = await fetch('/api/admin/users');
+            const users = await usersRes.json();
+            adminUserList.innerHTML = '';
+            users.forEach(u => {
+                const item = document.createElement('div');
+                item.className = 'studio-video-item';
+                item.innerHTML = `
+                    <div class="studio-video-info">
+                        <div>
+                            <h4>${u.username} (${u.role})</h4>
+                            <p>${u.email}</p>
+                        </div>
+                    </div>
+                    <div class="studio-actions">
+                        <button class="studio-btn edit-btn">Manage</button>
+                        <button class="studio-btn delete-btn">Suspend</button>
+                    </div>
+                `;
+                adminUserList.appendChild(item);
+            });
+        } catch (err) { console.error(err); }
+    }
+
+    openAdminBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        adminModal.classList.add('active');
+        loadAdminDashboard();
+    });
+
+    closeAdminBtn.addEventListener('click', () => adminModal.classList.remove('active'));
 
     // Check if already logged in
     const savedToken = localStorage.getItem('token');
